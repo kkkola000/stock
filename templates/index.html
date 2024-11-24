@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRM - Заказы</title>
+</head>
+<body>
+    <h1>Список заказов</h1>
+    <a href="/add">Добавить заказ</a>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Клиент</th>
+            <th>Товар</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.customer_name }}</td>
+            <td>{{ order.product }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+                <a href="/update/{{ order.id }}">Изменить</a>
+                <a href="/delete/{{ order.id }}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
