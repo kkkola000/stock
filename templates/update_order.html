@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Обновить статус</title>
+</head>
+<body>
+    <h1>Обновить статус заказа</h1>
+    <form method="POST">
+        <label>Текущий статус:</label><br>
+        <select name="status">
+            <option value="Новый" {% if order.status == 'Новый' %}selected{% endif %}>Новый</option>
+            <option value="Обработан" {% if order.status == 'Обработан' %}selected{% endif %}>Обработан</option>
+            <option value="Отправлен" {% if order.status == 'Отправлен' %}selected{% endif %}>Отправлен</option>
+            <option value="Доставлен" {% if order.status == 'Доставлен' %}selected{% endif %}>Доставлен</option>
+        </select><br>
+        <button type="submit">Сохранить</button>
+    </form>
+</body>
+</html>
