@@ -12,16 +12,4 @@
         <stock>5</stock>
         <price>25020</price>
     </product>
-    <product>
-        <id>2</id>
-        <name>Коляска 22</name>
-        <stock>5</stock>
-        <price>25020</price>
-    </product>
-    <product>
-        <id>2</id>
-        <name>Коляска 22</name>
-        <stock>5</stock>
-        <price>25020</price>
-    </product>
 </products>
