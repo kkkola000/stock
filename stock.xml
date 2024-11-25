@@ -2,13 +2,13 @@
 <products>
     <product>
         <id>1</id>
-        <name>Коляска ABC</name>
+        <name>Коляска 1</name>
         <stock>10</stock>
         <price>20000</price>
     </product>
     <product>
         <id>2</id>
-        <name>Коляска XYZ</name>
+        <name>Коляска 2</name>
         <stock>5</stock>
         <price>25000</price>
     </product>
