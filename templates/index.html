@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Товары</title>
+    <title>Остатки на складе</title>
 </head>
 <body>
-    <h1>Список товаров</h1>
-    <p>Последнее обновление данных: {{ update_date }}</p>
+    <h1>Остатки товаров на складе</h1>
+    <p>Последнее обновление: {{ date }}</p>
     <table border="1">
         <thead>
             <tr>
-                <th>Наименование</th>
-                <th>Артикул</th>
+                <th>Название</th>
+                <th>ID</th>
                 <th>Остаток</th>
             </tr>
         </thead>
         <tbody>
-            {% for product in products %}
+            {% for offer in offers %}
             <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.sku }}</td>
-                <td>{{ product.stock }}</td>
+                <td>{{ offer.name }}</td>
+                <td>{{ offer.id }}</td>
+                <td>{{ offer.stock_quantity }}</td>
             </tr>
             {% endfor %}
         </tbody>
