@@ -2,14 +2,14 @@
 <products>
     <product>
         <id>1</id>
-        <name>Коляска 1</name>
+        <name>Коляска 12</name>
         <stock>1</stock>
-        <price>200</price>
+        <price>2020</price>
     </product>
     <product>
         <id>2</id>
-        <name>Коляска 2</name>
+        <name>Коляска 22</name>
         <stock>5</stock>
-        <price>2500</price>
+        <price>25020</price>
     </product>
 </products>
