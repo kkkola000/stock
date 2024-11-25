@@ -4,6 +4,14 @@
     Header set Expires 0
 </FilesMatch>
 
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+location / {
+    add_header Access-Control-Allow-Origin "*";
+}
+
 location ~* \.xml$ {
     add_header Cache-Control "no-store, no-cache, must-revalidate, max-age=0";
     add_header Pragma "no-cache";
