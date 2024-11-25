@@ -71,7 +71,10 @@
 }
 
 // Используем полный URL к XML-файлу
-const file = 'https://example.com/files/stock.xml';
+const file = `https://example.com/files/stock.xml?t=${new Date().getTime()}`;
+loadXMLFile(file, function(xml) {
+    console.log(xml); // Обработка данных
+});
 
 loadXMLFile(file, function(xml) {
     // Обработка данных
