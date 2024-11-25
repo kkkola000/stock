@@ -25,6 +25,17 @@
         }
     </style>
 </head>
+
+<button id="refresh">Обновить данные</button>
+
+<script>
+    document.getElementById('refresh').addEventListener('click', function() {
+        const tableBody = document.querySelector('#productTable tbody');
+        tableBody.innerHTML = ''; // Очистка таблицы
+        loadXMLFile('stock.xml', displayProducts); // Повторная загрузка данных
+    });
+</script>
+    
 <body>
     <h1>Остатки товара</h1>
     <table id="productTable">
