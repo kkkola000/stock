@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 20px;
         }
         table {
             width: 100%;
@@ -25,17 +26,6 @@
         }
     </style>
 </head>
-
-<button id="refresh">Обновить данные</button>
-
-<script>
-    document.getElementById('refresh').addEventListener('click', function() {
-        const tableBody = document.querySelector('#productTable tbody');
-        tableBody.innerHTML = ''; // Очистка таблицы
-        loadXMLFile('stock.xml', displayProducts); // Повторная загрузка данных
-    });
-</script>
-    
 <body>
     <h1>Остатки товара</h1>
     <table id="productTable">
@@ -48,49 +38,40 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Данные будут загружены динамически -->
+            <!-- Данные будут загружены сюда -->
         </tbody>
     </table>
 
     <script>
-        // Функция для загрузки XML-файла
-        function loadXMLFile(file, callback) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', file, true); // Указываем полный URL
-    xhr.onload = function () {
-        if (xhr.status === 200) {
-            callback(xhr.responseXML); // Передаём XML для обработки
-        } else {
-            console.error('Не удалось загрузить XML:', xhr.statusText);
+        // Функция загрузки XML-файла
+        async function loadXMLFile(file) {
+            try {
+                const response = await fetch(file, {
+                    headers: {
+                        'Cache-Control': 'no-cache' // Отключение кеширования
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`Ошибка загрузки XML: ${response.statusText}`);
+                }
+                const xmlText = await response.text(); // Получаем текст XML
+                const parser = new DOMParser();
+                return parser.parseFromString(xmlText, "application/xml"); // Парсим XML
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
         }
-    };
-    xhr.onerror = function () {
-        console.error('Ошибка при загрузке XML.');
-    };
-    xhr.send();
-}
 
-// Используем полный URL к XML-файлу
-const file = `https://mnogokolyasok.ru/stock.xml?t=${new Date().getTime()}`;
-loadXMLFile(file, function(xml) {
-    console.log(xml); // Обработка данных
-});
-
-loadXMLFile(file, function(xml) {
-    // Обработка данных
-    const products = xml.getElementsByTagName('product');
-    for (let i = 0; i < products.length; i++) {
-        const name = products[i].getElementsByTagName('name')[0].textContent;
-        console.log(name); // Выводим имя товара
-    }
-});
-
-
-
-        // Функция для отображения данных из XML
+        // Функция отображения данных в таблице
         function displayProducts(xml) {
+            if (!xml) {
+                console.error("XML не удалось загрузить.");
+                return;
+            }
             const products = xml.getElementsByTagName('product');
             const tableBody = document.querySelector('#productTable tbody');
+            tableBody.innerHTML = ""; // Очищаем таблицу перед добавлением новых данных
 
             for (let i = 0; i < products.length; i++) {
                 const product = products[i];
@@ -99,7 +80,7 @@ loadXMLFile(file, function(xml) {
                 const stock = product.getElementsByTagName('stock')[0].textContent;
                 const price = product.getElementsByTagName('price')[0].textContent;
 
-                // Создание строки таблицы
+                // Создаём строку таблицы
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${id}</td>
@@ -111,8 +92,11 @@ loadXMLFile(file, function(xml) {
             }
         }
 
-        // Загружаем и отображаем данные
-        loadXMLFile('stock.xml', displayProducts);
+        // URL XML-файла (замените на свой URL)
+        const file = 'https://mnogokolyasok.ru/stock.xml'; // Замените на ваш URL
+
+        // Загружаем данные и отображаем их
+        loadXMLFile(file).then(displayProducts);
     </script>
 </body>
 </html>
