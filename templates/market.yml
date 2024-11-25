@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
+<yml_catalog date="2024-11-25 12:00">
+    <shop>
+        <offers>
+            <offer id="12345" available="true">
+                <name>Коляска A</name>
+                <stock_quantity>10</stock_quantity>
+            </offer>
+            <offer id="67890" available="true">
+                <name>Коляска B</name>
+                <stock_quantity>5</stock_quantity>
+            </offer>
+        </offers>
+    </shop>
+</yml_catalog>
