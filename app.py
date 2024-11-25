@@ -1,24 +1,31 @@
-from flask import Flask, render_template, request
-import yaml
-import os
-from datetime import datetime
+from flask import Flask, render_template
+import xml.etree.ElementTree as ET
 
 app = Flask(__name__)
 
-# Функция для загрузки данных из YML файла
-def load_data():
-    with open("data.yml", "r", encoding="utf-8") as file:
-        data = yaml.safe_load(file)
-    return data
+# Функция для чтения данных из YML-файла
+def load_data_from_yml(file_path):
+    tree = ET.parse(file_path)
+    root = tree.getroot()
+    date = root.attrib["date"]  # Дата из атрибута yml_catalog
+    offers = []
+
+    # Парсим товары из секции <offer>
+    for offer in root.find("shop").find("offers").findall("offer"):
+        product = {
+            "id": offer.attrib["id"],
+            "name": offer.find("name").text,
+            "stock_quantity": offer.find("stock_quantity").text,
+        }
+        offers.append(product)
+
+    return date, offers
 
 # Главная страница
 @app.route("/")
 def index():
-    data = load_data()
-    update_date = data["updated"]
-    products = data["products"]
-    return render_template("index.html", products=products, update_date=update_date)
+    date, offers = load_data_from_yml("market.yml")
+    return render_template("index.html", date=date, offers=offers)
 
 if __name__ == "__main__":
-    # Запуск сервера на localhost
     app.run(debug=True)
