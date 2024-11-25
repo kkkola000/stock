@@ -56,12 +56,10 @@
         // Функция для загрузки XML-файла
         function loadXMLFile(file, callback) {
     const xhr = new XMLHttpRequest();
-    // Добавляем уникальный параметр ?t=timestamp для предотвращения кеширования
-    const url = `${file}?t=${new Date().getTime()}`; 
-    xhr.open('GET', url, true);
+    xhr.open('GET', file, true); // Указываем полный URL
     xhr.onload = function () {
         if (xhr.status === 200) {
-            callback(xhr.responseXML);
+            callback(xhr.responseXML); // Передаём XML для обработки
         } else {
             console.error('Не удалось загрузить XML:', xhr.statusText);
         }
@@ -71,6 +69,19 @@
     };
     xhr.send();
 }
+
+// Используем полный URL к XML-файлу
+const file = 'https://example.com/files/stock.xml';
+
+loadXMLFile(file, function(xml) {
+    // Обработка данных
+    const products = xml.getElementsByTagName('product');
+    for (let i = 0; i < products.length; i++) {
+        const name = products[i].getElementsByTagName('name')[0].textContent;
+        console.log(name); // Выводим имя товара
+    }
+});
+
 
 
         // Функция для отображения данных из XML
