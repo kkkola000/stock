@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
     <product>
-        <id>1</id>
-        <name>Коляска 12</name>
-        <stock>1</stock>
-        <price>2020</price>
+        <name>Коляска 2в1 Anex</name>
+        <stock>55</stock>
+        <price>79890</price>
     </product>
     <product>
-        <id>2</id>
-        <name>Коляска 22</name>
-        <stock>5</stock>
-        <price>25020</price>
+        <name>Коляска 2в1 Anex</name>
+        <stock>43</stock>
+        <price>79890</price>
+    </product>
+    <product>
+        <name>Коляска 2в1 Cybex</name>
+        <stock>43</stock>
+        <price>140000</price>
+    </product>
+    <product>
+        <name>Коляска 2в1 Cybex</name>
+        <stock>32</stock>
+        <price>140000</price>
+    </product>
+    <product>
+        <name>Коляска 2в1 Carrello</name>
+        <stock>12</stock>
+        <price>55000</price>
+    </product>
+    <product>
+        <name>Коляска 2в1 Carrello</name>
+        <stock>23</stock>
+        <price>63000</price>
     </product>
 </products>
