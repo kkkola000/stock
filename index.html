@@ -92,11 +92,9 @@
             }
         }
 
-        // URL XML-файла (замените на свой URL)
-        const url = 'https://mnogokolyasok.ru/f/stock.xml?t=${new Date().getTime()}`; // Замените на ваш URL
+        const file = 'stock.xml';
+loadXMLFile(file, callbackFunction);
 
-        // Загружаем данные и отображаем их
-        loadXMLFile(file).then(displayProducts);
     </script>
 </body>
 </html>
