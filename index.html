@@ -9,10 +9,18 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         table, th, td {
             border: 1px solid #ddd;
@@ -24,14 +32,20 @@
         th {
             background-color: #f4f4f4;
         }
+        tr.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>Остатки товара</h1>
+
+    <!-- Поле для поиска -->
+    <input type="text" id="searchInput" placeholder="Введите текст для поиска..." oninput="filterTable()">
+
     <table id="productTable">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Название</th>
                 <th>Остаток</th>
                 <th>Цена</th>
@@ -43,8 +57,8 @@
     </table>
 
     <script>
-        // Функция загрузки XML-файла
-        async function loadXMLFile(file) {
+        // Функция для загрузки CSV-файла
+        async function loadCSVFile(file) {
             try {
                 const response = await fetch(file, {
                     headers: {
@@ -52,38 +66,39 @@
                     }
                 });
                 if (!response.ok) {
-                    throw new Error(`Ошибка загрузки XML: ${response.statusText}`);
+                    throw new Error(`Ошибка загрузки CSV: ${response.statusText}`);
                 }
-                const xmlText = await response.text(); // Получаем текст XML
-                const parser = new DOMParser();
-                return parser.parseFromString(xmlText, "application/xml"); // Парсим XML
+                return await response.text(); // Получаем текст CSV
             } catch (error) {
                 console.error(error);
                 return null;
             }
         }
 
-        // Функция отображения данных в таблице
-        function displayProducts(xml) {
-            if (!xml) {
-                console.error("XML не удалось загрузить.");
+        // Функция для парсинга CSV в массив
+        function parseCSV(csv, delimiter = ",") {
+            const rows = csv.split("\n").map(row => row.trim()).filter(row => row.length > 0); // Убираем пустые строки
+            const data = rows.map(row => row.split(delimiter).map(cell => cell.trim())); // Разделяем строки по разделителю
+            return data;
+        }
+
+        // Функция для отображения данных в таблице
+        function displayProducts(data) {
+            if (!data || data.length < 2) {
+                console.error("Некорректный CSV-файл.");
                 return;
             }
-            const products = xml.getElementsByTagName('product');
+
             const tableBody = document.querySelector('#productTable tbody');
             tableBody.innerHTML = ""; // Очищаем таблицу перед добавлением новых данных
 
-            for (let i = 0; i < products.length; i++) {
-                const product = products[i];
-                const id = product.getElementsByTagName('id')[0].textContent;
-                const name = product.getElementsByTagName('name')[0].textContent;
-                const stock = product.getElementsByTagName('stock')[0].textContent;
-                const price = product.getElementsByTagName('price')[0].textContent;
+            // Обработка строк данных (пропускаем заголовок)
+            for (let i = 1; i < data.length; i++) {
+                const [, name, stock, price] = data[i]; // Пропускаем ID (первый элемент массива)
 
                 // Создаём строку таблицы
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${id}</td>
                     <td>${name}</td>
                     <td>${stock}</td>
                     <td>${price} руб.</td>
@@ -92,11 +107,30 @@
             }
         }
 
-        // Указываем URL для загрузки XML
-        const file = `https://mnogokolyasok.ru/f/stock.xml?t=${new Date().getTime()}`;
+        // Функция для фильтрации таблицы
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const rows = document.querySelectorAll('#productTable tbody tr');
 
-        // Загружаем данные и отображаем их
-        loadXMLFile(file).then(displayProducts);
+            rows.forEach(row => {
+                const cells = Array.from(row.querySelectorAll('td'));
+                const matches = cells.some(cell => cell.textContent.toLowerCase().includes(filter));
+                row.classList.toggle('hidden', !matches); // Скрываем строки, если нет совпадений
+            });
+        }
+
+        // URL CSV-файла
+        const file = 'https://mnogokolyasok.ru/f/stock.csv?t=${new Date().getTime()}`; // Замените на ваш реальный URL
+
+        // Загружаем и обрабатываем данные
+        loadCSVFile(file)
+            .then(csv => {
+                if (csv) {
+                    const data = parseCSV(csv); // Парсим CSV
+                    displayProducts(data); // Отображаем данные
+                }
+            });
     </script>
 </body>
 </html>
