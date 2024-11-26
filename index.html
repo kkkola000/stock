@@ -92,9 +92,11 @@
             }
         }
 
-        const file = 'stock.xml';
-loadXMLFile(file, callbackFunction);
+        // Указываем URL для загрузки XML
+        const file = `https://mnogokolyasok.ru/f/stock.xml?t=${new Date().getTime()}`;
 
+        // Загружаем данные и отображаем их
+        loadXMLFile(file).then(displayProducts);
     </script>
 </body>
 </html>
